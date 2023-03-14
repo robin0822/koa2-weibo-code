@@ -1,8 +1,10 @@
+const { error } = require('console');
+
 /*
  * @Author: robin0822 125346665@qq.com
  * @Date: 2023-03-07 13:28:02
  * @LastEditors: robin0822 125346665@qq.com
- * @LastEditTime: 2023-03-13 13:40:36
+ * @LastEditTime: 2023-03-14 13:57:17
  * @FilePath: /koa2-weibo-code/src/routes/index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -38,6 +40,8 @@ router.get('/string', async (ctx, next) => {
 })
 
 router.get('/json', async (ctx, next) => {
+
+
   ctx.body = {
     title: 'koa2 json'
   }
