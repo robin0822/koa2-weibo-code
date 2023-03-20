@@ -2,7 +2,7 @@
  * @Author: robin0822 125346665@qq.com
  * @Date: 2023-03-07 13:28:02
  * @LastEditors: robin0822 125346665@qq.com
- * @LastEditTime: 2023-03-14 13:56:51
+ * @LastEditTime: 2023-03-16 14:09:57
  * @FilePath: /koa2/koa2-weibo-code/src/app.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,12 +14,15 @@ const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 
+const session = require('koa-generic-session');
+const redisStore = require('koa-redis');
+
 const index = require('./routes/index')
 const users = require('./routes/users')
 
 const { isProd } = require('./utils/env')
 
-
+const {REDIS_CONF} = require('./conf/db')
 //
 const errorViewRouter = require('./routes/view/error');
 
@@ -46,6 +49,21 @@ app.use(require('koa-static')(__dirname + '/public'))
 app.use(views(__dirname + '/views', {
   extension: 'ejs'
 }))
+
+app.keys = ['UISdf_9879##'];
+
+app.use(session({
+  store: redisStore({
+    all:`${REDIS_CONF.host}:${REDIS_CONF.port}`
+  }),
+  key: 'weibo.sid',
+  prefix: 'weibo:sess:',
+  cookie:{
+    path:'/',
+    httpOnly:true,
+    maxAge:24*60*60*1000,
+  }
+}));
 
 // logger
 app.use(async (ctx, next) => {
